@@ -1,7 +1,7 @@
 import tempfile
 
 from pdf2image import convert_from_path
-from pypdf import PdfReader
+from pypdf import PdfReader, PdfWriter
 
 
 def convert_to_safe(path: str) -> None:
@@ -18,6 +18,18 @@ def convert_to_safe(path: str) -> None:
                 output_folder=temp
             )
         
-        print()
+        pdf = PdfWriter()
         
-        images[0].save(path, "PDF", resolution=100.0, save_all=True, append_images=images[1:])
+        for idx, image in enumerate(images):
+            print("[Page %d/%d] Saving '%s'..." % (idx + 1, num_pages, path), end="\r")
+            
+            with tempfile.TemporaryFile() as temp_page:
+                image.save(temp_page, "PDF", resolution=100.0)
+
+                page = PdfReader(temp_page)
+                pdf.add_page(page.pages[0])
+        
+        open(path, 'w').close() # completely erase pdf file
+        pdf.write(path) # write new data to file
+        
+        print() # newline
