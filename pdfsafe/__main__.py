@@ -15,7 +15,7 @@ def _normalize_path(path: str) -> str:
 
 def _get_pdf_paths(path: str) -> List[str]:
     if os.path.isdir(path):
-        return [file for file in os.listdir(path) if file.endswith('.pdf')]
+        return [os.path.join(path, file) for file in os.listdir(path) if file.endswith('.pdf')]
     return [path]
 
 parser = ArgumentParser(

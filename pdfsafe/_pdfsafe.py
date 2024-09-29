@@ -4,12 +4,9 @@ from pdf2image import convert_from_path
 from pypdf import PdfReader
 
 
-def _get_num_pages(path: str) -> int:
-    return PdfReader(open(path, "rb")).get_num_pages()
-
 def convert_to_safe(path: str) -> None:
     images = []
-    num_pages = _get_num_pages(path)
+    num_pages = PdfReader(open(path, "rb")).get_num_pages()
     
     with tempfile.TemporaryDirectory() as temp:
         for idx in range(num_pages):
