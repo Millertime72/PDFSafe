@@ -12,5 +12,6 @@ license = {file = "LICENSE"}
 
 dependencies = [
     "Pillow",
+    "pdf2image",
     "pypdf"
 ]
